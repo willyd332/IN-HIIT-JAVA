@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.rmi.server.ExportException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -53,7 +54,24 @@ public class UserController {
 
 
     @DeleteMapping("{id}")
-    public String deleteUser(@PathVariable Long id) { return "Deleting User " + id; }
+    public User deleteUser(@PathVariable Long id) throws IOException {
+
+        Optional<User> queryResponse = UserRepository.findById(id);
+
+        if (queryResponse.isPresent()){
+
+            User deletedUser = queryResponse.get();
+            UserRepository.deleteById(id);
+
+            return deletedUser;
+
+        } else {
+
+            throw new IOException("This User Doesn't Exists");
+
+        }
+
+    }
 
 
     @PutMapping("{id}")

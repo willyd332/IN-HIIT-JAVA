@@ -4,6 +4,9 @@ import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/workouts")
 public class WorkoutController {
@@ -28,7 +31,27 @@ public class WorkoutController {
 
 
     @DeleteMapping("{id}")
-    public String deleteWorkout(@PathVariable Long id){ return "Deleting Workout " + id; }
+    public Workout deleteWorkout(@PathVariable Long id) throws IOException {
+
+        Optional<Workout> queryResponse = WorkoutRepository.findById(id);
+
+        System.out.println(queryResponse.get());
+        System.out.println(id);
+
+        if (queryResponse.isPresent()){
+
+            Workout deletedWorkout = queryResponse.get();
+            WorkoutRepository.deleteById(id);
+
+            return deletedWorkout;
+
+        } else {
+
+            throw new IOException("This Workout Doesn't Exists");
+
+        }
+
+    }
 
 
     @PutMapping("{id}")
