@@ -15,18 +15,9 @@ public class User {
 
     private String userpassword;
 
-    private int zipcode;
-
-    public Long getId() {
-        return id;
-    }
 
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getUserpassword() {
@@ -37,11 +28,4 @@ public class User {
         this.userpassword = userpassword;
     }
 
-    public int getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(int zipCode) {
-        this.zipcode = zipCode;
-    }
 }

@@ -4,6 +4,7 @@ import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -27,7 +28,24 @@ public class WorkoutController {
 
 
     @PostMapping
-    public String createWorkout(){ return "Creating Workout"; }
+    public Workout createWorkout(@RequestBody Workout newWorkout, HttpSession session) throws IOException {
+
+        User user = UserRepository.findByUsername(session.getAttribute("username").toString());
+
+        if (user == null){
+            throw new IOException("You Must Be Logged In");
+        }
+
+        newWorkout.setUser(user);
+        Workout createdWorkout = WorkoutRepository.save(newWorkout);
+
+        if (createdWorkout != null){
+            return createdWorkout;
+        } else {
+            throw new IOException("Creation Failed");
+        }
+
+        }
 
 
     @DeleteMapping("{id}")
@@ -55,12 +73,23 @@ public class WorkoutController {
 
 
     @PutMapping("{id}")
-    public String putWorkout(@PathVariable Long id){ return "Editing Workout " + id; }
+    public Workout editWorkout(@RequestBody Workout newWorkout, @PathVariable("id") Long id) throws IOException {
 
+        Optional<Workout> queryResponse = WorkoutRepository.findById(id);
 
-    @GetMapping("{id}")
-    public String showWorkout(@PathVariable Long id){ return "Showing Workout " + id; }
+        if (queryResponse.isPresent()){
 
+          Workout workoutToEdit = queryResponse.get();
+          workoutToEdit.setWorkout(newWorkout);
+          return WorkoutRepository.save(workoutToEdit);
+
+        } else {
+
+            throw new IOException("This Workout Doesn't Exists");
+
+        }
+
+    }
 
 
 }

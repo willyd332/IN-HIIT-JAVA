@@ -21,12 +21,16 @@ public class Workout {
     @JoinColumn(name="user_id")
     private User user;
 
-    public Long getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
+    }
+
+    public void setWorkout(Workout newWorkout){
+        this.setName(newWorkout.getName());
+        this.setIntervalone(newWorkout.getIntervalone());
+        this.setIntervaltwo(newWorkout.getIntervaltwo());
+        this.setCycles(newWorkout.getCycles());
     }
 
     public void setName(String name) {
@@ -55,10 +59,6 @@ public class Workout {
 
     public void setCycles(int cycles) {
         this.cycles = cycles;
-    }
-
-    public User getUser() {
-        return user;
     }
 
     public void setUser(User user) {

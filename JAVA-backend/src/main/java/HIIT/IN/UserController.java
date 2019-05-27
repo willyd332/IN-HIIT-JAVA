@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.rmi.server.ExportException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -27,19 +29,9 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    @GetMapping
-    public String getUsers(){
-        return "Getting Users";
-    }
-
 
     @PostMapping("/register")
     public User register(@RequestBody User newUser, HttpSession session) throws IOException {
-
-        System.out.println("**********************************************************************");
-        System.out.println(newUser.getUsername());
-        System.out.println(newUser.getUserpassword());
-        System.out.println("**********************************************************************");
 
         User createdUser = UserService.saveUser(newUser);
 
@@ -74,16 +66,17 @@ public class UserController {
     }
 
 
-    @PutMapping("{id}")
-    public String editUser(@PathVariable Long id) { return "Edititng User " + id; }
-
-
-    @GetMapping("{id}")
-    public String showUser(@PathVariable Long id) { return "Showing User " + id; }
-
-
     @GetMapping("/logout")
-    public String logOut() { return "Logging Out"; }
+    public HashMap<String,String> logOut(HttpSession session) {
+
+        session.invalidate();
+
+        HashMap<String,String> response = new HashMap<>();
+        response.put("data", "logged out");
+        response.put("status", "200");
+
+        return response;
+    }
 
 
     @PostMapping("/login")
