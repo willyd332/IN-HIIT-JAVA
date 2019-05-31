@@ -1,7 +1,8 @@
 # inHIIT (JAVA BACKEND)
 
+### LINK TO DEPLOYED APP: https://calm-tundra-47736.herokuapp.com/
 
-### LINK TO FRONTEND: https://github.com/willyd332/inHIIT
+### LINK TO FRONTEND REPOSITORY: https://github.com/willyd332/inHIIT
 
 Adam Wolfman // Will Dinneen
 
